@@ -1,11 +1,15 @@
 package w18d3proveMattina.users;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import w18d3proveMattina.exceptions.BadRequestException;
 import w18d3proveMattina.exceptions.NotFoundException;
 
 @Service
@@ -19,13 +23,16 @@ public class UsersService {
 	}
 
 	public User create(UserRequestPayload body) {
-		// TODO: check if email already in use
+		ur.findByEmail(body.getEmail()).ifPresent(user -> {
+			throw new BadRequestException("Email già esistente");
+		});
 		User newUser = new User(body.getName(), body.getSurname(), body.getEmail());
 		return ur.save(newUser);
 	}
 
-	public List<User> find() {
-		return ur.findAll();
+	public Page<User> find(int page, int size, String sort) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+		return ur.findAll(pageable);
 	}
 
 	public User findById(UUID userId) throws NotFoundException {
