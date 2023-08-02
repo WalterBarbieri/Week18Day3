@@ -24,7 +24,7 @@ import w18d3esercizio.utenti.Utente;
 public class Prenotazione {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+	private UUID prenotazioneId;
 	private LocalDate giornoPrenotazione;
 	@ManyToOne
 	@JoinColumn(name = "postazione_id")
@@ -41,7 +41,7 @@ public class Prenotazione {
 
 	@Override
 	public String toString() {
-		return "Prenotazione [Id: " + id + ", Data Prenotazione: " + giornoPrenotazione + ", Postazione"
+		return "Prenotazione [Id: " + prenotazioneId + ", Data Prenotazione: " + giornoPrenotazione + ", Postazione"
 				+ postazione.getTipoPostazione() + " in " + postazione.getCitta() + ", Utente: "
 				+ utente.getNomeCompleto() + "]";
 	}

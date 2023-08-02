@@ -1,5 +1,7 @@
 package w18d3esercizio.utenti;
 
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +48,14 @@ public class UtenteService {
 	public void deleteUtente(UUID utenteId) {
 		Utente found = this.getUtenteById(utenteId);
 		ur.delete(found);
+	}
+
+	public UUID getRndUtente() {
+		Random rnd = new Random();
+		List<Utente> utenti = ur.findAll();
+		if (utenti.isEmpty()) {
+			return null;
+		}
+		return utenti.get(rnd.nextInt(utenti.size())).getUtenteId();
 	}
 }
